@@ -1,56 +1,30 @@
 import React, { Component } from 'react';
 import { Button, Header, Image, Modal } from 'semantic-ui-react';
 
-class ModalDelete extends Component {
-	constructor() {
-		super();
-		this.state = {
-			open: false,
-			dimmer: false
-		};
-	}
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { closeModal } from '../../actions/modal';
 
-	componentDidMount() {
-		this.setState({
-			open: this.props.open,
-			dimmer: this.props.dimmer
-		});
-	}
+import './Modal.scss';
 
-	close = () => {};
+class ModalConfirmation extends Component {
+	close = () => {
+		this.props.closeModal();
+	};
 
 	render() {
 		return (
 			<div>
-				{/* <Button onClick={this.show(true)}>Default</Button>
-				<Button onClick={this.show('inverted')}>Inverted</Button>
-				<Button onClick={this.show('blurring')}>Blurring</Button> */}
-
 				<Modal dimmer={this.props.dimmer} open={this.props.open} onClose={this.close}>
-					<Modal.Header>Select a Photo</Modal.Header>
+					<Modal.Header>{this.props.header}</Modal.Header>
 					<Modal.Content image>
-						<Image
-							wrapped
-							size="medium"
-							src="https://react.semantic-ui.com/images/avatar/large/rachel.png"
-						/>
-						<Modal.Description>
-							<Header>Default Profile Image</Header>
-							<p>We've found the following gravatar image associated with your e-mail address.</p>
-							<p>Is it okay to use this photo?</p>
-						</Modal.Description>
+						<Modal.Description>{this.props.children}</Modal.Description>
 					</Modal.Content>
 					<Modal.Actions>
-						<Button color="black" onClick={this.close}>
-							Nope
+						<Button color="red" onClick={this.close}>
+							No
 						</Button>
-						<Button
-							positive
-							icon="checkmark"
-							labelPosition="right"
-							content="Yep, that's me"
-							onClick={this.close}
-						/>
+						<Button positive icon="checkmark" labelPosition="right" content="Yes" onClick={this.close} />
 					</Modal.Actions>
 				</Modal>
 			</div>
@@ -58,4 +32,15 @@ class ModalDelete extends Component {
 	}
 }
 
-export default ModalDelete;
+const mapStateToProps = (state) => {
+	return {
+		open: state.modal.open,
+		dimmer: state.modal.dimmer
+	};
+};
+
+const mapDispatchToProps = (dispatch) => {
+	return bindActionCreators({ closeModal }, dispatch);
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ModalConfirmation);

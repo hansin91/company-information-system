@@ -2,15 +2,16 @@ import React, { Component } from 'react';
 import { Card, Header, Icon, Button } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 import './CompanyInfo.scss';
-import ModalDelete from '../Modal';
+import ModalConfirmation from '../Modal';
+
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { openModal } from '../../actions/modal';
 
 class CompanyInfo extends Component {
-	state = { open: false };
-
-	show = (dimmer) => () => this.setState({ dimmer, open: true });
-	// close = () => this.setState({ open: false });
-
-	close = () => {};
+	show = () => {
+		this.props.openModal();
+	};
 
 	render() {
 		const info = this.props.company;
@@ -24,7 +25,7 @@ class CompanyInfo extends Component {
 									<Link to={'/detail/' + this.props.id}>
 										<Header as="h2">{info.name}</Header>
 									</Link>
-									<Icon onClick={this.show(true)} className="pointer" name="delete" size="big" />
+									<Icon onClick={this.show} className="pointer" name="delete" size="big" />
 								</React.Fragment>
 							) : (
 								<Header as="h2">{info.name}</Header>
@@ -49,10 +50,23 @@ class CompanyInfo extends Component {
 						</Card.Meta>
 					</Card.Content>
 				</Card>
-				<ModalDelete dimmer={this.state.dimmer} open={this.state.open} onClick={this.close} />
+				<ModalConfirmation header="Delete Confirmation" dimmer={this.props.dimmer} open={this.props.open}>
+					<p>Are you sure want to delete this data ?</p>
+				</ModalConfirmation>
 			</React.Fragment>
 		);
 	}
 }
 
-export default CompanyInfo;
+const mapStateToProps = (state) => {
+	return {
+		open: state.modal.open,
+		dimmer: state.modal.dimmer
+	};
+};
+
+const mapDispatchToProps = (dispatch) => {
+	return bindActionCreators({ openModal }, dispatch);
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(CompanyInfo);
