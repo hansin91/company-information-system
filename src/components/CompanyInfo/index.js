@@ -2,15 +2,14 @@ import React, { Component } from 'react';
 import { Card, Header, Icon, Button } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 import './CompanyInfo.scss';
-import ModalConfirmation from '../Modal';
 
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 import { openModal } from '../../actions/modal';
+import { getCompanyId } from '../../actions/company';
 
 class CompanyInfo extends Component {
 	show = () => {
-		this.props.openModal();
+		this.props.openModal(this.props.id);
 	};
 
 	render() {
@@ -50,23 +49,16 @@ class CompanyInfo extends Component {
 						</Card.Meta>
 					</Card.Content>
 				</Card>
-				<ModalConfirmation header="Delete Confirmation" dimmer={this.props.dimmer} open={this.props.open}>
-					<p>Are you sure want to delete this data ?</p>
-				</ModalConfirmation>
 			</React.Fragment>
 		);
 	}
 }
 
-const mapStateToProps = (state) => {
-	return {
-		open: state.modal.open,
-		dimmer: state.modal.dimmer
-	};
-};
+const mapDispatchToProps = (dispatch) => ({
+	openModal: (index) => {
+		dispatch(openModal());
+		dispatch(getCompanyId(index));
+	}
+});
 
-const mapDispatchToProps = (dispatch) => {
-	return bindActionCreators({ openModal }, dispatch);
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(CompanyInfo);
+export default connect(null, mapDispatchToProps)(CompanyInfo);

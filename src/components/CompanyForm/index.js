@@ -6,7 +6,6 @@ import validate from '../../validators';
 import './CompanyForm.scss';
 
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 import { createCompany, getCompanyList } from '../../actions/company';
 
 class CompanyForm extends Component {
@@ -58,8 +57,7 @@ class CompanyForm extends Component {
 
 	render() {
 		const onSubmit = (formValues) => {
-			this.props.createCompany(formValues);
-			this.props.getCompanyList();
+			this.props.saveCompany(formValues);
 		};
 
 		return (
@@ -96,9 +94,12 @@ const mapStateToProps = (state) => {
 	};
 };
 
-const mapDispatchToProps = (dispatch) => {
-	return bindActionCreators({ createCompany, getCompanyList }, dispatch);
-};
+const mapDispatchToProps = (dispatch) => ({
+	saveCompany: (formValues) => {
+		dispatch(createCompany(formValues));
+		dispatch(getCompanyList());
+	}
+});
 
 export default reduxForm({
 	validate,

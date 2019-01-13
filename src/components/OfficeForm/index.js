@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Form, Message, Select, Dropdown } from 'semantic-ui-react';
+import { Button, Form, Message, Dropdown } from 'semantic-ui-react';
 import { Field, Fields, reduxForm } from 'redux-form';
 import validate from '../../validators';
 

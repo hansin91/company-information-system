@@ -4,12 +4,17 @@ import { Button, Header, Image, Modal } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { closeModal } from '../../actions/modal';
+import { deleteCompany, getCompanyList } from '../../actions/company';
 
 import './Modal.scss';
 
 class ModalConfirmation extends Component {
 	close = () => {
 		this.props.closeModal();
+	};
+
+	deleteCompany = () => {
+		this.props.deleteCompany(this.props.id);
 	};
 
 	render() {
@@ -24,7 +29,13 @@ class ModalConfirmation extends Component {
 						<Button color="red" onClick={this.close}>
 							No
 						</Button>
-						<Button positive icon="checkmark" labelPosition="right" content="Yes" onClick={this.close} />
+						<Button
+							positive
+							icon="checkmark"
+							labelPosition="right"
+							content="Yes"
+							onClick={this.deleteCompany}
+						/>
 					</Modal.Actions>
 				</Modal>
 			</div>
@@ -39,8 +50,15 @@ const mapStateToProps = (state) => {
 	};
 };
 
-const mapDispatchToProps = (dispatch) => {
-	return bindActionCreators({ closeModal }, dispatch);
-};
+const mapDispatchToProps = (dispatch) => ({
+	deleteCompany: (index) => {
+		dispatch(deleteCompany(index));
+		dispatch(closeModal());
+		dispatch(getCompanyList());
+	},
+	closeModal: () => {
+		dispatch(closeModal());
+	}
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(ModalConfirmation);

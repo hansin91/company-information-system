@@ -22,10 +22,25 @@ export const createCompany = (data) => (dispatch) => {
 	});
 };
 
+export const deleteCompany = (index) => (dispatch) => {
+	let isDelete = CompanyService.deleteCompany(index);
+	dispatch({
+		type: C.DELETE_COMPANY,
+		payload: isDelete
+	});
+};
+
 export const findCompany = (index) => (dispatch) => {
 	let company = JSON.parse(CompanyService.findCompany(index));
 	dispatch({
 		type: C.GET_COMPANY,
 		payload: company
+	});
+};
+
+export const getCompanyId = (index) => (dispatch) => {
+	dispatch({
+		type: C.GET_COMPANY_ID,
+		payload: index
 	});
 };

@@ -12,6 +12,7 @@ import { CardGroup } from 'semantic-ui-react';
 import Form from '../../components/Form';
 import CompanyForm from '../../components/CompanyForm';
 import OfficeForm from '../../components/OfficeForm';
+import ModalConfirmation from '../../components/Modal';
 
 class Overview extends Component {
 	componentDidMount() {
@@ -40,6 +41,14 @@ class Overview extends Component {
 						<div>There is no company created yet.</div>
 					)}
 				</GridContainer>
+				<ModalConfirmation
+					id={this.props.id}
+					header="Delete Confirmation"
+					dimmer={this.props.dimmer}
+					open={this.props.open}
+				>
+					<p>Are you sure want to delete this data ?</p>
+				</ModalConfirmation>
 			</div>
 		);
 	}
@@ -47,7 +56,10 @@ class Overview extends Component {
 
 const mapStateToProps = (state) => {
 	return {
-		companies: state.company.companies
+		companies: state.company.companies,
+		id: state.company.id,
+		open: state.modal.open,
+		dimmer: state.modal.dimmer
 	};
 };
 

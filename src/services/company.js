@@ -15,6 +15,12 @@ const CompanyService = {
 			company = companies[index];
 		}
 		return company;
+	},
+	deleteCompany: (index) => {
+		let companies = CompanyService.getCompanies();
+		companies.splice(index, 1);
+		localStorage.setItem('companies', JSON.stringify(companies));
+		return true;
 	}
 };
 
