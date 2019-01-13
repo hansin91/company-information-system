@@ -12,3 +12,18 @@ export const createOffice = (data) => (dispatch) => {
 		payload: office
 	});
 };
+
+export const getOfficeId = (index) => (dispatch) => {
+	dispatch({
+		type: C.GET_OFFICE_ID,
+		payload: index
+	});
+};
+
+export const deleteOffice = (companyId, officeId) => (dispatch) => {
+	OfficeService.deleteOffice(companyId, officeId);
+	dispatch({
+		type: C.DELETE_OFFICE,
+		payload: true
+	});
+};

@@ -43,6 +43,7 @@ class Overview extends Component {
 				</GridContainer>
 				<ModalConfirmation
 					id={this.props.id}
+					delete="company"
 					header="Delete Confirmation"
 					dimmer={this.props.dimmer}
 					open={this.props.open}

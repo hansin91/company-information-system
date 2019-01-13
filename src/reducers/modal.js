@@ -2,7 +2,8 @@ import C from '../constants';
 
 const initialState = {
 	open: false,
-	dimmer: 'blurring'
+	dimmer: 'blurring',
+	isCompany: true
 };
 
 const modal = (state = initialState, action) => {

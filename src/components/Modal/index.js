@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import { Button, Header, Image, Modal } from 'semantic-ui-react';
+import { Button, Modal } from 'semantic-ui-react';
 
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 import { closeModal } from '../../actions/modal';
-import { deleteCompany, getCompanyList } from '../../actions/company';
+import { deleteCompany, getCompanyList, findCompany } from '../../actions/company';
+import { deleteOffice } from '../../actions/office';
 
 import './Modal.scss';
 
@@ -17,7 +17,12 @@ class ModalConfirmation extends Component {
 		this.props.deleteCompany(this.props.id);
 	};
 
+	deleteOffice = () => {
+		this.props.deleteOffice(this.props.companyId, this.props.officeId);
+	};
+
 	render() {
+		console.log(this.props.delete);
 		return (
 			<div>
 				<Modal dimmer={this.props.dimmer} open={this.props.open} onClose={this.close}>
@@ -34,7 +39,7 @@ class ModalConfirmation extends Component {
 							icon="checkmark"
 							labelPosition="right"
 							content="Yes"
-							onClick={this.deleteCompany}
+							onClick={this.props.delete === 'company' ? this.deleteCompany : this.deleteOffice}
 						/>
 					</Modal.Actions>
 				</Modal>
@@ -55,6 +60,11 @@ const mapDispatchToProps = (dispatch) => ({
 		dispatch(deleteCompany(index));
 		dispatch(closeModal());
 		dispatch(getCompanyList());
+	},
+	deleteOffice: (companyId, officeId) => {
+		dispatch(deleteOffice(companyId, officeId));
+		dispatch(closeModal());
+		dispatch(findCompany(companyId));
 	},
 	closeModal: () => {
 		dispatch(closeModal());

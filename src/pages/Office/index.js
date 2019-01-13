@@ -9,6 +9,7 @@ import './Office.scss';
 import GridContainer from '../../components/GridContainer';
 import { CardGroup } from 'semantic-ui-react';
 import OfficeInfo from '../../components/OfficeInfo';
+import ModalConfirmation from '../../components/Modal';
 
 class Office extends Component {
 	componentDidMount() {
@@ -17,6 +18,7 @@ class Office extends Component {
 	}
 
 	render() {
+		console.log(this.props.officeId, this.props.companyId);
 		return (
 			<div className="office__page">
 				<div className="office__page__container">
@@ -36,6 +38,16 @@ class Office extends Component {
 							<div>There is no offices created yet.</div>
 						)}
 					</GridContainer>
+					<ModalConfirmation
+						delete="office"
+						companyId={this.props.companyId}
+						officeId={this.props.officeId}
+						header="Delete Confirmation"
+						dimmer={this.props.dimmer}
+						open={this.props.open}
+					>
+						<p>Are you sure want to delete this data ?</p>
+					</ModalConfirmation>
 				</div>
 			</div>
 		);
@@ -44,7 +56,11 @@ class Office extends Component {
 
 const mapStateToProps = (state) => {
 	return {
-		company: state.company.company
+		company: state.company.company,
+		companyId: state.company.id,
+		officeId: state.office.id,
+		dimmer: state.modal.dimmer,
+		open: state.modal.open
 	};
 };
 
