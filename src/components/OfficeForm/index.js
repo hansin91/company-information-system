@@ -66,6 +66,7 @@ class OfficeForm extends Component {
 				company.value = i;
 				company.text = parsedOption.name;
 				companies.push(company);
+				return companies;
 			});
 		}
 		return companies;

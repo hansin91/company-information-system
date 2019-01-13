@@ -18,7 +18,6 @@ class Office extends Component {
 	}
 
 	render() {
-		console.log(this.props.officeId, this.props.companyId);
 		return (
 			<div className="office__page">
 				<div className="office__page__container">

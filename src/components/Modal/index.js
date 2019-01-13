@@ -22,7 +22,6 @@ class ModalConfirmation extends Component {
 	};
 
 	render() {
-		console.log(this.props.delete);
 		return (
 			<div>
 				<Modal dimmer={this.props.dimmer} open={this.props.open} onClose={this.close}>
