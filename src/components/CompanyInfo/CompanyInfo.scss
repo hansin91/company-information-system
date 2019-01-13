@@ -1,0 +1,19 @@
+.company-info {
+	&__heading {
+		display: flex;
+		justify-content: space-between;
+
+		.pointer {
+			cursor: pointer;
+		}
+	}
+}
+
+.width__card--full {
+	width: 100% !important;
+}
+
+.phone__button {
+	display: flex;
+	justify-content: space-between;
+}
