@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import CompanyInfo from '../../components/CompanyInfo';
+import PropTypes from 'prop-types';
 
 import './Overview.scss';
 import GridContainer from '../../components/GridContainer';
@@ -13,6 +14,7 @@ import Form from '../../components/Form';
 import CompanyForm from '../../components/CompanyForm';
 import OfficeForm from '../../components/OfficeForm';
 import ModalConfirmation from '../../components/Modal';
+import FlashMessage from '../../components/FlashMessage';
 
 class Overview extends Component {
 	componentDidMount() {
@@ -21,36 +23,39 @@ class Overview extends Component {
 
 	render() {
 		return (
-			<div className="overview">
-				<div className="overview__form">
-					<Form title="Create Company">
-						<CompanyForm />
-					</Form>
-					<Form title="Create Office">
-						<OfficeForm />
-					</Form>
+			<React.Fragment>
+				<div className="overview">
+					<FlashMessage />
+					<div className="overview__form">
+						<Form title="Create Company">
+							<CompanyForm />
+						</Form>
+						<Form title="Create Office">
+							<OfficeForm />
+						</Form>
+					</div>
+					<GridContainer title="Companies">
+						{this.props.companies.length > 0 ? (
+							<CardGroup itemsPerRow={2}>
+								{this.props.companies.map((element, i) => {
+									return <CompanyInfo link={true} id={i} company={JSON.parse(element)} key={i} />;
+								})}
+							</CardGroup>
+						) : (
+							<div>There is no company created yet.</div>
+						)}
+					</GridContainer>
+					<ModalConfirmation
+						id={this.props.id}
+						delete="company"
+						header="Delete Confirmation"
+						dimmer={this.props.dimmer}
+						open={this.props.open}
+					>
+						<p>Are you sure want to delete this data ?</p>
+					</ModalConfirmation>
 				</div>
-				<GridContainer title="Companies">
-					{this.props.companies.length > 0 ? (
-						<CardGroup itemsPerRow={2}>
-							{this.props.companies.map((element, i) => {
-								return <CompanyInfo link={true} id={i} company={JSON.parse(element)} key={i} />;
-							})}
-						</CardGroup>
-					) : (
-						<div>There is no company created yet.</div>
-					)}
-				</GridContainer>
-				<ModalConfirmation
-					id={this.props.id}
-					delete="company"
-					header="Delete Confirmation"
-					dimmer={this.props.dimmer}
-					open={this.props.open}
-				>
-					<p>Are you sure want to delete this data ?</p>
-				</ModalConfirmation>
-			</div>
+			</React.Fragment>
 		);
 	}
 }
@@ -60,8 +65,17 @@ const mapStateToProps = (state) => {
 		companies: state.company.companies,
 		id: state.company.id,
 		open: state.modal.open,
-		dimmer: state.modal.dimmer
+		dimmer: state.modal.dimmer,
+		messages: state.message.messages
 	};
+};
+
+Overview.prototypes = {
+	companies: PropTypes.array.isRequired,
+	id: PropTypes.number.isRequired,
+	open: PropTypes.bool.isRequired,
+	dimmer: PropTypes.bool.isRequired,
+	messages: PropTypes.array.isRequired
 };
 
 const mapDispatchToProps = (dispatch) => {

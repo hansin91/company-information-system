@@ -14,11 +14,10 @@ export const createCompany = (data) => (dispatch) => {
 	let company = new Company();
 	Object.assign(company, data);
 	company.offices = [];
-	company = JSON.stringify(company);
-	let companies = CompanyService.addCompany(company);
+	CompanyService.addCompany(JSON.stringify(company));
 	dispatch({
 		type: C.CREATE_COMPANY,
-		payload: companies
+		payload: company
 	});
 };
 

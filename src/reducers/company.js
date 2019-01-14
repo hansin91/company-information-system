@@ -1,8 +1,9 @@
 import C from '../constants';
+import { Company } from '../models/Company';
 
 const initialState = {
 	companies: [],
-	company: {},
+	company: new Company(),
 	id: '',
 	delete: false
 };

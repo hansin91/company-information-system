@@ -2,11 +2,13 @@ import React, { Component } from 'react';
 import { Button, Form, Message } from 'semantic-ui-react';
 import { Field, Fields, reduxForm } from 'redux-form';
 import validate from '../../validators';
+import PropTypes from 'prop-types';
 
 import './CompanyForm.scss';
 
 import { connect } from 'react-redux';
 import { createCompany, getCompanyList } from '../../actions/company';
+import { renderFlashMessage } from '../../actions/message';
 
 class CompanyForm extends Component {
 	renderError({ error, touched }) {
@@ -60,6 +62,11 @@ class CompanyForm extends Component {
 			this.props.saveCompany(formValues);
 		};
 
+		const numberOnly = (value, previousValue) => {
+			const regexPattern = /[0-9]+$/;
+			return regexPattern.test(value) ? value : value.length === 0 ? '' : previousValue;
+		};
+
 		return (
 			<Form onSubmit={this.props.handleSubmit(onSubmit)}>
 				<Field name="name" component={this.renderInput} label="Name" />
@@ -82,11 +89,6 @@ class CompanyForm extends Component {
 	}
 }
 
-const numberOnly = (value, previousValue) => {
-	const regexPattern = /[0-9]+$/;
-	return regexPattern.test(value) ? value : value.length === 0 ? '' : previousValue;
-};
-
 const mapStateToProps = (state) => {
 	return {
 		company: state.company.company,
@@ -98,8 +100,19 @@ const mapDispatchToProps = (dispatch) => ({
 	saveCompany: (formValues) => {
 		dispatch(createCompany(formValues));
 		dispatch(getCompanyList());
+		dispatch(
+			renderFlashMessage({
+				type: 'success',
+				text: formValues.name + ' has been succesfully created',
+				header: 'Create company'
+			})
+		);
 	}
 });
+
+CompanyForm.propTypes = {
+	saveCompany: PropTypes.func.isRequired
+};
 
 export default reduxForm({
 	validate,
