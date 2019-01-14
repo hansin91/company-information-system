@@ -38,16 +38,18 @@ class OfficeForm extends Component {
 		);
 	};
 
-	renderDatePicker = ({ label, meta, input: { onChange, value }, showTime }) => {
+	renderDatePicker = ({ label, meta, input, input: { onChange, value }, showTime }) => {
 		return (
 			<Form.Field>
 				<label>{label}</label>
 				<DateTimePicker
+					{...input}
 					onChange={onChange}
 					format="DD-MM-YYYY"
 					time={showTime}
 					value={!value ? null : new Date(value)}
 				/>
+				{this.renderError(meta)}
 			</Form.Field>
 		);
 	};
