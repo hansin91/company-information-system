@@ -45,6 +45,7 @@ class OfficeForm extends Component {
 				<DateTimePicker
 					{...input}
 					onChange={onChange}
+					placeholder={label}
 					format="MM-DD-YYYY"
 					time={showTime}
 					value={!value ? null : new Date(value)}
