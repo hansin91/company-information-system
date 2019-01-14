@@ -11,7 +11,7 @@ import momentLocaliser from 'react-widgets-moment';
 import 'react-widgets/dist/css/react-widgets.css';
 
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
+import { reset } from 'redux-form';
 import { getCompanyList } from '../../actions/company';
 import { createOffice } from '../../actions/office';
 
@@ -38,7 +38,7 @@ class OfficeForm extends Component {
 		);
 	};
 
-	renderDatePicker = ({ label, input: { onChange, value }, showTime }) => {
+	renderDatePicker = ({ label, meta, input: { onChange, value }, showTime }) => {
 		return (
 			<Form.Field>
 				<label>{label}</label>
@@ -53,7 +53,13 @@ class OfficeForm extends Component {
 	};
 
 	renderOptions = (options) => {
-		let companies = [];
+		let companies = [
+			{
+				key: '',
+				value: null,
+				text: '--Select one--'
+			}
+		];
 		if (options.length > 0) {
 			options.map((option, i) => {
 				let company = {
@@ -90,7 +96,7 @@ class OfficeForm extends Component {
 		);
 	};
 
-	renderPhoneNumber = (fields) => {
+	renderLatLog = (fields) => {
 		const onChangeFirst = (event) => {
 			const normalizedValue = fields.normalize(event.target.value);
 			fields[event.target.name].input.onChange(normalizedValue);
@@ -104,10 +110,10 @@ class OfficeForm extends Component {
 						let elem = fields[field];
 						let name = elem.input.name.charAt(0).toUpperCase() + elem.input.name.slice(1);
 						return (
-							<div className="phone__container" key={i}>
+							<div className="form__inline" key={i}>
 								<Form.Input
-									onChange={onChangeFirst}
 									{...elem.input}
+									onChange={onChangeFirst}
 									placeholder={name}
 									autoComplete="off"
 								/>
@@ -121,16 +127,29 @@ class OfficeForm extends Component {
 	};
 
 	render() {
+		const { handleSubmit, companies, valid, pristine, submitting, createOffice, resetForm } = this.props;
+
 		const onSubmit = (formValues) => {
-			this.props.createOffice(formValues);
+			createOffice(formValues);
+			resetForm();
+		};
+
+		const positiveFloatNumber = (value, previousValue) => {
+			const regexPattern = /(\d)/;
+			return regexPattern.test(value) ? value : value.length === 0 ? '' : previousValue;
+		};
+
+		const reset = (e) => {
+			e.preventDefault();
+			resetForm();
 		};
 
 		return (
-			<Form onSubmit={this.props.handleSubmit(onSubmit)}>
+			<Form onSubmit={handleSubmit(onSubmit)}>
 				<Field name="name" component={this.renderInput} label="Name" />
 				<Fields
 					names={[ 'latitude', 'longitude' ]}
-					component={this.renderPhoneNumber}
+					component={this.renderLatLog}
 					normalize={positiveFloatNumber}
 					label="Location:"
 				/>
@@ -141,7 +160,7 @@ class OfficeForm extends Component {
 					label="Office Start Date"
 				/>
 				<Field
-					options={this.props.companies && this.props.companies.length > 0 ? this.props.companies : []}
+					options={companies && companies.length > 0 ? companies : []}
 					name="company"
 					component={this.renderDropdown}
 					label="Company"
@@ -149,18 +168,16 @@ class OfficeForm extends Component {
 					optionsValue="name"
 				/>
 
-				<Button primary className={this.props.valid ? '' : 'disabled'}>
+				<Button primary className={valid ? '' : 'disabled'}>
 					Create
+				</Button>
+				<Button secondary className={pristine || submitting ? 'disabled' : ''} onClick={reset}>
+					Reset
 				</Button>
 			</Form>
 		);
 	}
 }
-
-const positiveFloatNumber = (value, previousValue) => {
-	const regexPattern = /[+]?[0-9]*\.?[0-9]+/;
-	return regexPattern.test(value) ? value : value.length === 0 ? '' : previousValue;
-};
 
 const mapStateToProps = (state) => {
 	return {
@@ -168,9 +185,17 @@ const mapStateToProps = (state) => {
 	};
 };
 
-const mapDispatchToProps = (dispatch) => {
-	return bindActionCreators({ getCompanyList, createOffice }, dispatch);
-};
+const mapDispatchToProps = (dispatch) => ({
+	getCompanyList: () => {
+		dispatch(getCompanyList());
+	},
+	createOffice: (formValues) => {
+		dispatch(createOffice(formValues));
+	},
+	resetForm: () => {
+		dispatch(reset('officeCreate'));
+	}
+});
 
 export default reduxForm({
 	form: 'officeCreate',

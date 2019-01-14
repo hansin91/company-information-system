@@ -9,6 +9,22 @@ const validate = (formValues) => {
 		errors.address = 'You must enter the address';
 	}
 
+	if (!formValues.latitude) {
+		errors.latitude = 'You must enter the latitude';
+	}
+
+	if (!formValues.longitude) {
+		errors.longitude = 'You must enter the latitude';
+	}
+
+	if (!formValues.officeStartDate) {
+		errors.officeStartDate = 'You must select the date';
+	}
+
+	if (formValues.company == null) {
+		errors.company = 'You must select the company';
+	}
+
 	const regexPattern = /[0-9]*$/;
 
 	if (!formValues.revenue) {

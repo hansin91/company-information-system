@@ -3,6 +3,7 @@ import { Button, Form, Message } from 'semantic-ui-react';
 import { Field, Fields, reduxForm } from 'redux-form';
 import validate from '../../validators';
 import PropTypes from 'prop-types';
+import { reset } from 'redux-form';
 
 import './CompanyForm.scss';
 
@@ -41,7 +42,7 @@ class CompanyForm extends Component {
 						let elem = fields[field];
 						let name = elem.input.name.charAt(0).toUpperCase() + elem.input.name.slice(1);
 						return (
-							<div className="phone__container" key={i}>
+							<div className="form__inline" key={i}>
 								<Form.Input
 									{...elem.input}
 									placeholder={name}
@@ -58,8 +59,11 @@ class CompanyForm extends Component {
 	};
 
 	render() {
+		const { saveCompany, resetForm, handleSubmit, valid, pristine, submitting } = this.props;
+
 		const onSubmit = (formValues) => {
-			this.props.saveCompany(formValues);
+			saveCompany(formValues);
+			resetForm();
 		};
 
 		const numberOnly = (value, previousValue) => {
@@ -67,8 +71,13 @@ class CompanyForm extends Component {
 			return regexPattern.test(value) ? value : value.length === 0 ? '' : previousValue;
 		};
 
+		const reset = (e) => {
+			e.preventDefault();
+			resetForm();
+		};
+
 		return (
-			<Form onSubmit={this.props.handleSubmit(onSubmit)}>
+			<Form onSubmit={handleSubmit(onSubmit)}>
 				<Field name="name" component={this.renderInput} label="Name" />
 				<Field name="address" component={this.renderInput} label="Address" />
 				<Field name="revenue" component={this.renderInput} label="Revenue" normalize={numberOnly} />
@@ -78,10 +87,10 @@ class CompanyForm extends Component {
 					labels={[ 'Phone No:', 'Code', 'Phone' ]}
 					normalize={numberOnly}
 				/>
-				<Button primary className={this.props.valid ? '' : 'disabled'}>
+				<Button primary className={valid ? '' : 'disabled'}>
 					Create
 				</Button>
-				<Button secondary onClick={this.props.reset}>
+				<Button secondary className={pristine || submitting ? 'disabled' : ''} onClick={reset}>
 					Reset
 				</Button>
 			</Form>
@@ -107,6 +116,9 @@ const mapDispatchToProps = (dispatch) => ({
 				header: 'Create company'
 			})
 		);
+	},
+	resetForm: () => {
+		dispatch(reset('companyCreate'));
 	}
 });
 
