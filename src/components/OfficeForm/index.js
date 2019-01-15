@@ -79,16 +79,17 @@ class OfficeForm extends Component {
 
 	renderDropdown = ({ label, input, options }) => {
 		let companies = this.renderOptions(options);
+
 		return (
 			<Form.Field>
 				<label>{label}</label>
 				<Dropdown
 					selection
-					{...input}
 					search
 					options={companies}
 					value={input.value}
 					onChange={(param, data) => input.onChange(data.value)}
+					onSearchChange={(param, data) => input.onChange(data.value)}
 					placeholder={label}
 				/>
 			</Form.Field>

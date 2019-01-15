@@ -2,13 +2,14 @@ import React from 'react';
 import './GridContainer.scss';
 
 const GridContainer = (props) => {
+	const { title, children } = props;
 	return (
 		<React.Fragment>
 			<div className="grid__heading">
-				<h1 className="grid__heading--title">{props.title ? props.title : ''}</h1>
+				<h1 className="grid__heading--title">{title ? title : ''}</h1>
 			</div>
 
-			<div className="grid__container">{props.children}</div>
+			<div className="grid__container">{children}</div>
 		</React.Fragment>
 	);
 };

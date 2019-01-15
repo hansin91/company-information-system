@@ -2,10 +2,11 @@ import React from 'react';
 import './Form.scss';
 
 const Form = (props) => {
+	const { title, children } = props;
 	return (
 		<div className="form__container">
-			<h1>{props.title ? props.title : ''}</h1>
-			{props.children}
+			<h1>{title ? title : ''}</h1>
+			{children}
 		</div>
 	);
 };

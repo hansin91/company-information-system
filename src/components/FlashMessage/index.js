@@ -11,8 +11,10 @@ class FlashMessage extends Component {
 	};
 
 	render() {
-		return this.props.messages.length > 0
-			? this.props.messages.map((message) => {
+		const { messages } = this.props;
+
+		return messages.length > 0
+			? messages.map((message) => {
 					return (
 						<Message
 							className={message.type === 'success' ? 'success' : 'error'}
