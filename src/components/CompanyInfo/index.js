@@ -8,38 +8,42 @@ import { openModal } from '../../actions/modal';
 import { getCompanyId } from '../../actions/company';
 
 class CompanyInfo extends Component {
-	show = () => {
-		this.props.openModal(this.props.id);
-	};
-
 	render() {
-		const info = this.props.company;
+		const { link, id, company: { name, address, revenue, code, phone }, openModal } = this.props;
+
+		const show = () => {
+			openModal(id);
+		};
+
 		return (
 			<React.Fragment>
-				<Card className={this.props.link ? '' : 'width__card--full'}>
+				<Card className={link ? '' : 'width__card--full'}>
 					<Card.Content>
 						<div className="company-info__heading">
-							{this.props.link ? (
+							{link ? (
 								<React.Fragment>
-									<Link to={'/detail/' + this.props.id}>
-										<Header as="h2">{info.name}</Header>
+									<Link to={'/detail/' + id}>
+										<Header as="h2">{name}</Header>
 									</Link>
-									<Icon onClick={this.show} className="pointer" name="delete" size="big" />
+									<div className="company-info__action">
+										<Icon className="pointer" name="edit" size="big" />
+										<Icon onClick={show} className="pointer" name="delete" size="big" />
+									</div>
 								</React.Fragment>
 							) : (
-								<Header as="h2">{info.name}</Header>
+								<Header as="h2">{name}</Header>
 							)}
 						</div>
 					</Card.Content>
 					<Card.Content>
 						<Header as="h4">Address:</Header>
-						<Card.Meta>{info.address}</Card.Meta>
+						<Card.Meta>{address}</Card.Meta>
 						<Header as="h4">Revenue:</Header>
-						<Card.Meta>{info.revenue}</Card.Meta>
+						<Card.Meta>{revenue}</Card.Meta>
 						<Header as="h4">Phone No:</Header>
-						<Card.Meta className={this.props.link ? '' : 'phone__button'}>
-							({info.code}) {info.phone}
-							{this.props.link ? (
+						<Card.Meta className={link ? '' : 'phone__button'}>
+							({code}) {phone}
+							{link ? (
 								''
 							) : (
 								<Link to="/">

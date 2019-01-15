@@ -22,6 +22,8 @@ class Overview extends Component {
 	}
 
 	render() {
+		const { companies, open, dimmer, id } = this.props;
+
 		return (
 			<React.Fragment>
 				<div className="overview">
@@ -35,9 +37,9 @@ class Overview extends Component {
 						</Form>
 					</div>
 					<GridContainer title="Companies">
-						{this.props.companies.length > 0 ? (
+						{companies.length > 0 ? (
 							<CardGroup itemsPerRow={2}>
-								{this.props.companies.map((element, i) => {
+								{companies.map((element, i) => {
 									return <CompanyInfo link={true} id={i} company={JSON.parse(element)} key={i} />;
 								})}
 							</CardGroup>
@@ -46,11 +48,11 @@ class Overview extends Component {
 						)}
 					</GridContainer>
 					<ModalConfirmation
-						id={this.props.id}
-						delete="company"
+						id={id}
+						isCompany={true}
 						header="Delete Confirmation"
-						dimmer={this.props.dimmer}
-						open={this.props.open}
+						dimmer={dimmer}
+						open={open}
 					>
 						<p>Are you sure want to delete this data ?</p>
 					</ModalConfirmation>
@@ -75,7 +77,8 @@ Overview.prototypes = {
 	id: PropTypes.number.isRequired,
 	open: PropTypes.bool.isRequired,
 	dimmer: PropTypes.bool.isRequired,
-	messages: PropTypes.array.isRequired
+	messages: PropTypes.array.isRequired,
+	getCompanyList: PropTypes.func.isRequired
 };
 
 const mapDispatchToProps = (dispatch) => {

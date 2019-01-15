@@ -9,28 +9,42 @@ import { deleteOffice } from '../../actions/office';
 import './Modal.scss';
 
 class ModalConfirmation extends Component {
-	close = () => {
-		this.props.closeModal();
-	};
-
-	deleteCompany = () => {
-		this.props.deleteCompany(this.props.id);
-	};
-
-	deleteOffice = () => {
-		this.props.deleteOffice(this.props.companyId, this.props.officeId);
-	};
-
 	render() {
+		const {
+			dimmer,
+			open,
+			header,
+			children,
+			isCompany,
+			closeModal,
+			deleteCompany,
+			deleteOffice,
+			id,
+			companyId,
+			officeId
+		} = this.props;
+
+		const close = () => {
+			closeModal();
+		};
+
+		const removeCompany = () => {
+			deleteCompany(id);
+		};
+
+		const removeOffice = () => {
+			deleteOffice(companyId, officeId);
+		};
+
 		return (
 			<div>
-				<Modal dimmer={this.props.dimmer} open={this.props.open} onClose={this.close}>
-					<Modal.Header>{this.props.header}</Modal.Header>
-					<Modal.Content image>
-						<Modal.Description>{this.props.children}</Modal.Description>
+				<Modal dimmer={dimmer} open={open} onClose={close}>
+					<Modal.Header>{header}</Modal.Header>
+					<Modal.Content>
+						<Modal.Description>{children}</Modal.Description>
 					</Modal.Content>
 					<Modal.Actions>
-						<Button color="red" onClick={this.close}>
+						<Button color="red" onClick={close}>
 							No
 						</Button>
 						<Button
@@ -38,7 +52,7 @@ class ModalConfirmation extends Component {
 							icon="checkmark"
 							labelPosition="right"
 							content="Yes"
-							onClick={this.props.delete === 'company' ? this.deleteCompany : this.deleteOffice}
+							onClick={isCompany ? removeCompany : removeOffice}
 						/>
 					</Modal.Actions>
 				</Modal>

@@ -38,7 +38,7 @@ class Office extends Component {
 						)}
 					</GridContainer>
 					<ModalConfirmation
-						delete="office"
+						isCompany={false}
 						companyId={this.props.companyId}
 						officeId={this.props.officeId}
 						header="Delete Confirmation"

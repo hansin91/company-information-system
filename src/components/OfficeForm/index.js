@@ -18,10 +18,6 @@ import { createOffice } from '../../actions/office';
 momentLocaliser(moment);
 
 class OfficeForm extends Component {
-	componentDidMount() {
-		this.props.getCompanyList();
-	}
-
 	renderError({ error, touched }) {
 		if (touched && error) {
 			return <Message negative header={error} />;

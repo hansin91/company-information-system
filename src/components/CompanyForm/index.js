@@ -123,7 +123,8 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 CompanyForm.propTypes = {
-	saveCompany: PropTypes.func.isRequired
+	saveCompany: PropTypes.func.isRequired,
+	resetForm: PropTypes.func.isRequired
 };
 
 export default reduxForm({
