@@ -18,18 +18,20 @@ class Office extends Component {
 	}
 
 	render() {
+		const { company, companyId, officeId, dimmer, open, company: { offices } } = this.props;
+
 		return (
 			<div className="office__page">
 				<div className="office__page__container">
-					{this.props.company.hasOwnProperty('name') ? (
-						<CompanyInfo link={false} company={this.props.company} />
+					{company.hasOwnProperty('name') ? (
+						<CompanyInfo link={false} company={company} />
 					) : (
 						<div>Not Found</div>
 					)}
 					<GridContainer title="Offices">
-						{this.props.company.hasOwnProperty('offices') && this.props.company.offices.length > 0 ? (
+						{company.hasOwnProperty('offices') && offices.length > 0 ? (
 							<CardGroup itemsPerRow={2}>
-								{this.props.company.offices.map((element, i) => {
+								{offices.map((element, i) => {
 									return <OfficeInfo id={i} office={element} key={i} />;
 								})}
 							</CardGroup>
@@ -39,11 +41,11 @@ class Office extends Component {
 					</GridContainer>
 					<ModalConfirmation
 						isCompany={false}
-						companyId={this.props.companyId}
-						officeId={this.props.officeId}
+						companyId={companyId}
+						officeId={officeId}
 						header="Delete Confirmation"
-						dimmer={this.props.dimmer}
-						open={this.props.open}
+						dimmer={dimmer}
+						open={open}
 					>
 						<p>Are you sure want to delete this data ?</p>
 					</ModalConfirmation>
