@@ -11,8 +11,12 @@ class CompanyInfo extends Component {
 	render() {
 		const { link, id, company: { name, address, revenue, code, phone }, openModal } = this.props;
 
-		const show = () => {
-			openModal(id);
+		const showModalDelete = () => {
+			openModal(id, 'delete');
+		};
+
+		const showModalEdit = () => {
+			openModal(id, 'edit');
 		};
 
 		return (
@@ -26,8 +30,8 @@ class CompanyInfo extends Component {
 										<Header as="h2">{name}</Header>
 									</Link>
 									<div className="company-info__action">
-										<Icon className="pointer" name="edit" size="big" />
-										<Icon onClick={show} className="pointer" name="delete" size="big" />
+										<Icon onClick={showModalEdit} className="pointer" name="edit" size="big" />
+										<Icon onClick={showModalDelete} className="pointer" name="delete" size="big" />
 									</div>
 								</React.Fragment>
 							) : (
@@ -59,8 +63,8 @@ class CompanyInfo extends Component {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-	openModal: (index) => {
-		dispatch(openModal());
+	openModal: (index, type) => {
+		dispatch(openModal(type));
 		dispatch(getCompanyId(index));
 	}
 });

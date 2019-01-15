@@ -22,8 +22,7 @@ class Overview extends Component {
 	}
 
 	render() {
-		const { companies, open, dimmer, id } = this.props;
-
+		const { companies, open, dimmer, id, type } = this.props;
 		return (
 			<React.Fragment>
 				<div className="overview">
@@ -47,15 +46,30 @@ class Overview extends Component {
 							<div>There is no company created yet.</div>
 						)}
 					</GridContainer>
-					<ModalConfirmation
-						id={id}
-						isCompany={true}
-						header="Delete Confirmation"
-						dimmer={dimmer}
-						open={open}
-					>
-						<p>Are you sure want to delete this data ?</p>
-					</ModalConfirmation>
+
+					{type === 'delete' ? (
+						<ModalConfirmation
+							id={id}
+							type={type}
+							isCompany={true}
+							header="Delete Confirmation"
+							dimmer={dimmer}
+							open={open}
+						>
+							<p>Are you sure want to delete this data ?</p>
+						</ModalConfirmation>
+					) : (
+						<ModalConfirmation
+							id={id}
+							type={type}
+							isCompany={true}
+							header="Edit Company"
+							dimmer={dimmer}
+							open={open}
+						>
+							<p>Are you sure want to delete this data ?</p>
+						</ModalConfirmation>
+					)}
 				</div>
 			</React.Fragment>
 		);
@@ -68,13 +82,15 @@ const mapStateToProps = (state) => {
 		id: state.company.id,
 		open: state.modal.open,
 		dimmer: state.modal.dimmer,
-		messages: state.message.messages
+		messages: state.message.messages,
+		type: state.modal.type
 	};
 };
 
 Overview.prototypes = {
 	companies: PropTypes.array.isRequired,
 	id: PropTypes.number.isRequired,
+	type: PropTypes.string.isRequired,
 	open: PropTypes.bool.isRequired,
 	dimmer: PropTypes.bool.isRequired,
 	messages: PropTypes.array.isRequired,

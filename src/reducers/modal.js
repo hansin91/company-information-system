@@ -3,7 +3,8 @@ import C from '../constants';
 const initialState = {
 	open: false,
 	dimmer: 'blurring',
-	isCompany: true
+	isCompany: true,
+	type: ''
 };
 
 const modal = (state = initialState, action) => {
@@ -16,7 +17,8 @@ const modal = (state = initialState, action) => {
 		case C.OPEN_MODAL:
 			return {
 				...state,
-				open: action.payload.open
+				open: action.payload.open,
+				type: action.payload.type
 			};
 		default:
 			return state;

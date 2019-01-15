@@ -8,24 +8,25 @@ import { getOfficeId } from '../../actions/office';
 
 class OfficeInfo extends Component {
 	render() {
-		const info = this.props.office;
+		const { office, office: { company }, id, openModal } = this.props;
+
 		const show = () => {
-			this.props.openModal(info.company, this.props.id);
+			openModal(company, id, 'delete');
 		};
 		return (
 			<Card>
 				<Card.Content>
 					<div className="company-info__heading">
-						<Header as="h2">{info.name}</Header>
+						<Header as="h2">{office.name}</Header>
 						<Icon onClick={show} className="pointer" name="delete" size="big" />
 					</div>
 				</Card.Content>
 				<Card.Content>
 					<Header as="h4">Location:</Header>
-					<Card.Meta>Lat - {info.latitude}</Card.Meta>
-					<Card.Meta>Log - {info.longitude}</Card.Meta>
+					<Card.Meta>Lat - {office.latitude}</Card.Meta>
+					<Card.Meta>Log - {office.longitude}</Card.Meta>
 					<Header as="h4">Office Start Date:</Header>
-					<Card.Meta>{info.officeStartDate}</Card.Meta>
+					<Card.Meta>{office.officeStartDate}</Card.Meta>
 				</Card.Content>
 			</Card>
 		);
@@ -33,8 +34,8 @@ class OfficeInfo extends Component {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-	openModal: (companyId, officeId) => {
-		dispatch(openModal());
+	openModal: (companyId, officeId, type) => {
+		dispatch(openModal(type));
 		dispatch(getCompanyId(companyId));
 		dispatch(getOfficeId(officeId));
 	}

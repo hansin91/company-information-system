@@ -21,7 +21,8 @@ class ModalConfirmation extends Component {
 			deleteOffice,
 			id,
 			companyId,
-			officeId
+			officeId,
+			type
 		} = this.props;
 
 		const close = () => {
@@ -36,6 +37,26 @@ class ModalConfirmation extends Component {
 			deleteOffice(companyId, officeId);
 		};
 
+		const handleButtonClick = (isCompany, type) => {
+			if (isCompany) {
+				switch (type) {
+					case 'delete':
+						removeCompany();
+						break;
+					default:
+						break;
+				}
+			} else {
+				switch (type) {
+					case 'delete':
+						removeOffice();
+						break;
+					default:
+						break;
+				}
+			}
+		};
+
 		return (
 			<div>
 				<Modal dimmer={dimmer} open={open} onClose={close}>
@@ -47,12 +68,13 @@ class ModalConfirmation extends Component {
 						<Button color="red" onClick={close}>
 							No
 						</Button>
+
 						<Button
 							positive
 							icon="checkmark"
 							labelPosition="right"
 							content="Yes"
-							onClick={isCompany ? removeCompany : removeOffice}
+							onClick={() => handleButtonClick(isCompany, type)}
 						/>
 					</Modal.Actions>
 				</Modal>

@@ -11,9 +11,10 @@ export const closeModal = () => (dispatch) => {
 	});
 };
 
-export const openModal = () => (dispatch) => {
+export const openModal = (type) => (dispatch) => {
 	const data = {
-		open: true
+		open: true,
+		type: type
 	};
 	dispatch({
 		type: C.OPEN_MODAL,

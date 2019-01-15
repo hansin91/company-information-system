@@ -18,7 +18,7 @@ class Office extends Component {
 	}
 
 	render() {
-		const { company, companyId, officeId, dimmer, open, company: { offices } } = this.props;
+		const { type, company, companyId, officeId, dimmer, open, company: { offices } } = this.props;
 
 		return (
 			<div className="office__page">
@@ -39,16 +39,30 @@ class Office extends Component {
 							<div>There is no offices created yet.</div>
 						)}
 					</GridContainer>
-					<ModalConfirmation
-						isCompany={false}
-						companyId={companyId}
-						officeId={officeId}
-						header="Delete Confirmation"
-						dimmer={dimmer}
-						open={open}
-					>
-						<p>Are you sure want to delete this data ?</p>
-					</ModalConfirmation>
+
+					{type === 'delete' ? (
+						<ModalConfirmation
+							isCompany={false}
+							companyId={companyId}
+							officeId={officeId}
+							header="Delete Confirmation"
+							dimmer={dimmer}
+							open={open}
+						>
+							<p>Are you sure want to delete this data ?</p>
+						</ModalConfirmation>
+					) : (
+						<ModalConfirmation
+							isCompany={false}
+							companyId={companyId}
+							officeId={officeId}
+							header="Edit Office"
+							dimmer={dimmer}
+							open={open}
+						>
+							<p>Are you sure want to delete this data ?</p>
+						</ModalConfirmation>
+					)}
 				</div>
 			</div>
 		);
@@ -61,7 +75,8 @@ const mapStateToProps = (state) => {
 		companyId: state.company.id,
 		officeId: state.office.id,
 		dimmer: state.modal.dimmer,
-		open: state.modal.open
+		open: state.modal.open,
+		type: state.modal.type
 	};
 };
 
